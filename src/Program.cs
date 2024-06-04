@@ -14,7 +14,7 @@ static class Program
         if (IsTraceOutputEnabled(args))
             Trace.Listeners.Add(new ConsoleTraceListener());
 
-        Console.Title = "Windows 10 Bloat Remover and Tweaker";
+        Console.Title = "Projek Toolkit Lemmesh";
         if (!HasAdministratorRights())
             Console.Title += " (unprivileged)";
 
@@ -45,7 +45,7 @@ static class Program
             new ErrorReportingDisablingEntry(),
             new ConsumerFeaturesDisablingEntry(),
             new SuggestionsDisablingEntry(),
-            new NewGitHubIssueEntry(),
+            //new NewGitHubIssueEntry(),
             new AboutEntry(),
             new QuitEntry(rebootFlag)
         ];
@@ -64,23 +64,23 @@ static class Program
 
         ConsoleHelpers.WriteLine("-- UNSUPPORTED WINDOWS VERSION --\n", ConsoleColor.DarkYellow);
         if (!OS.IsWindows10())
-            Console.WriteLine("This program was designed to work only on Windows 10.");
+            Console.WriteLine("Cuman buat WINDOWS 10");
         else
         {
             Console.WriteLine(
-                "You are running an older version of Windows 10 which is not supported by this version of the program.\n" +
-                "You should update your system or download an older version of the program which is compatible with this\n" +
+                "Lah Windows 7 dkk? lawak?.\n" +
+                "Cuman buat Windows 10 bro\n" +
                 $"Windows 10 version ({OS.GetWindowsVersionName()}) at the following page:"
             );
             ConsoleHelpers.WriteLine("  https://github.com/Fs00/Win10BloatRemover/releases/", ConsoleColor.Cyan);
         }
 
         Console.WriteLine(
-            "\nYou can still continue using this program, but BE AWARE that some features might work badly or not at all\n" +
-            "and could even have unintended effects on your system (including corruptions or instability)."
+            "\nBisa pake cuman\n" +
+            "Resiko ditanggung sendiri bro :D."
         );
 
-        Console.WriteLine("\nPress enter to continue, or another key to quit.");
+        Console.WriteLine("\nEnter buat lanjut keyboard laen buat balek.");
         if (Console.ReadKey().Key != ConsoleKey.Enter)
             Environment.Exit(-1);
     }
@@ -108,7 +108,7 @@ static class Program
         else if (exc is AppConfigurationWriteException)
             ConsoleHelpers.WriteLine($"Default settings file could not be created: {exc.Message}\n", ConsoleColor.DarkYellow);
 
-        Console.WriteLine("Press a key to continue to the main menu.");
+        Console.WriteLine("Kemaen menu tekan sembarang.....jan sembarang jua yang normal aje :)");
         Console.ReadKey();
     }
 
@@ -118,7 +118,7 @@ static class Program
         Console.CancelKeyPress += (sender, args) => {
             if (!cancelKeyPressedOnce)
             {
-                ConsoleHelpers.WriteLine("Press Ctrl+C again to terminate the program.", ConsoleColor.Red);
+                ConsoleHelpers.WriteLine("CTRL + C buat batalin Proses bro :| ", ConsoleColor.Red);
                 cancelKeyPressedOnce = true;
                 args.Cancel = true;
             }

@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ApplicationManifest>Properties\App.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+	<AssemblyTitle>Windows 10 Bloat Remover</AssemblyTitle>
+	<Product>Windows 10 Bloat Remover</Product>
+	<Copyright>Developed by Fs00</Copyright>
+	<Version>5.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\License.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Linq" />	
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Dism" Version="3.1.0" />
+  </ItemGroup>
+  <PropertyGroup>
+	<InvariantGlobalization>true</InvariantGlobalization>
+	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+	<EventSourceSupport>false</EventSourceSupport>
+	<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+  </PropertyGroup>
+  <PropertyGroup>
+	<AnalysisModeInteroperability>All</AnalysisModeInteroperability>
+	<AnalysisModeMaintainability>All</AnalysisModeMaintainability>
+	<AnalysisModeNaming>All</AnalysisModeNaming>
+	<AnalysisModeSingleFile>All</AnalysisModeSingleFile>
+	<AnalysisModeReliability>All</AnalysisModeReliability>
+	<AnalysisModeSecurity>All</AnalysisModeSecurity>
+	<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+  </PropertyGroup>
+</Project>
