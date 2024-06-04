@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 using Win10BloatRemover.Operations;
 using Win10BloatRemover.Utils;
 
@@ -30,10 +31,21 @@ class ConsoleMenu(MenuEntry[] entries, RebootRecommendedFlag rebootFlag)
 
     private void PrintHeading()
     {
-        Console.WriteLine("┌────────────────────────────────────────────┐");
-        Console.WriteLine("│    Windows 10 Bloat Remover and Tweaker    │");
-        Console.WriteLine($"│                version {programVersion.Major}.{programVersion.Minor}                 │");
-        Console.WriteLine("└────────────────────────────────────────────┘");
+        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+        Console.WriteLine("╔═══════════════════════════════════════════════════╗");
+        Console.WriteLine("║               ╔═══╗ ╔═══╗ ╔═══╗ ╔════╗            ║");
+        Console.WriteLine("║               ║   ║ ║   ╚═╝   ║ ║    ║            ║");
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("║               ║   ║ ║         ║ ║    ║            ║");
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("║               ║   ║ ║   ╔═══╗ ║ ║    ║            ║");
+        Console.ForegroundColor = ConsoleColor.DarkBlue;
+        Console.WriteLine("║               ║   ║ ║   ╚═══╝ ║ ║    ║            ║");
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.WriteLine("║               ╚═══╝ ╚═════════╝ ╚════╝            ║");
+        Console.WriteLine($"║       Toolkit Penghapus Bloatware - v{programVersion.Major}.{programVersion.Minor}          ║");
+        Console.WriteLine("╚═══════════════════════════════════════════════════╝");
+        Console.ResetColor();
         Console.WriteLine();
     }
 
@@ -54,10 +66,10 @@ class ConsoleMenu(MenuEntry[] entries, RebootRecommendedFlag rebootFlag)
         bool isUserInputCorrect = false;
         while (!isUserInputCorrect)
         {
-            Console.Write("Choose an operation: ");
+            Console.Write("Silahkan dipilih: ");
             chosenEntry = GetEntryCorrespondingToUserInput(Console.ReadLine());
             if (chosenEntry == null)
-                ConsoleHelpers.WriteLine("Incorrect input. Must be a valid menu entry number.", ConsoleColor.Red);
+                ConsoleHelpers.WriteLine("Harus ANGKA :D.", ConsoleColor.Red);
             else
                 isUserInputCorrect = true;
         }
@@ -84,7 +96,7 @@ class ConsoleMenu(MenuEntry[] entries, RebootRecommendedFlag rebootFlag)
 
     private bool UserWantsToProceed()
     {
-        Console.WriteLine("\nPress enter to continue, or another key to go back to the menu.");
+        Console.WriteLine("\nTekan tombol *Enter* untuk lanjut atau tombo lain untuk kelaman utama");
         return Console.ReadKey().Key == ConsoleKey.Enter;
     }
 
@@ -97,7 +109,7 @@ class ConsoleMenu(MenuEntry[] entries, RebootRecommendedFlag rebootFlag)
             operation.Run();
             if (operation.IsRebootRecommended)
             {
-                ConsoleHelpers.WriteLine("\nA system reboot is recommended.", ConsoleColor.Cyan);
+                ConsoleHelpers.WriteLine("\nA Disarankan untuk restart.", ConsoleColor.Cyan);
                 rebootFlag.SetRecommended();
             }
 
@@ -107,17 +119,17 @@ class ConsoleMenu(MenuEntry[] entries, RebootRecommendedFlag rebootFlag)
                 return;
             }
 
-            Console.Write("\nDone! ");
+            Console.Write("\nBerhasil :) ");
         }
         catch (Exception exc)
         {
-            ConsoleHelpers.WriteLine($"Operation failed: {exc.Message}", ConsoleColor.Red);
+            ConsoleHelpers.WriteLine($"Gagal Perhatikan: {exc.Message}", ConsoleColor.Red);
             Trace.WriteLine(exc.StackTrace);
             Console.WriteLine();
         }
 
         ConsoleHelpers.FlushStandardInput();
-        Console.WriteLine("Press a key to return to the main menu");
+        Console.WriteLine("Tekan tombol untuk kembali ke laman Utama :) ");
         Console.ReadKey();
     }
 }

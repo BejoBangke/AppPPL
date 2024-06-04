@@ -13,19 +13,19 @@ abstract class MenuEntry
 
 class UWPAppRemovalEntry(AppConfiguration configuration) : MenuEntry
 {
-    public override string FullName => "Remove UWP apps";
+    public override string FullName => "Hapus UWP app";
     public override string GetExplanation()
     {
         string impactedUsers = configuration.UWPAppsRemovalMode == UwpAppRemovalMode.CurrentUser
-            ? "the current user"
-            : "all present and future users";
-        string explanation = $"The following groups of UWP apps will be removed for {impactedUsers}:";
+            ? "Pengguna sekarang"
+            : "Pengguna sekarang dan mendatang";
+        string explanation = $"Berikut yang akan dihapus{impactedUsers}:";
         foreach (UwpAppGroup app in configuration.UWPAppsToRemove)
             explanation += $"\n  {app}";
 
         if (configuration.UWPAppsRemovalMode == UwpAppRemovalMode.AllUsers)
-            explanation += "\n\nServices, components and scheduled tasks used specifically by those apps will also " +
-                           "be disabled or removed,\ntogether with any leftover data.";
+            explanation += "\n\nPelayanan, Komponen dan tugas yang terjadwal yang digunakan oleh aplikasi juga" +
+                           "dihapus atau dimatikan,\nbersama dengan data yang tersimpan.";
 
         return explanation;
     }
@@ -37,17 +37,15 @@ class UWPAppRemovalEntry(AppConfiguration configuration) : MenuEntry
 
 class DefenderDisablingEntry : MenuEntry
 {
-    public override string FullName => "Disable Windows Defender antivirus";
+    public override string FullName => "Mematikan Antivirus Windows";
     public override string GetExplanation() => """
-        IMPORTANT: Before starting, disable Tamper protection in Windows Security app under Virus & threat protection settings.
+        Penting: Sebelum memulai, nonaktifkan Tamper Protection di aplikasi Windows Security pada pengaturan Virus & threat protection.
 
-        Windows Defender antimalware engine and SmartScreen feature will be disabled via Group Policies, and services
-        related to those features will be removed.
-        Furthermore, Windows Security app will be prevented from running automatically at system start-up.
-        Windows Defender Firewall will continue to work as intended.
+        Mesin antimalware Windows Defender dan fitur SmartScreen akan dinonaktifkan melalui Group Policies, dan layanan terkait fitur-fitur tersebut akan dihapus. Selain itu, aplikasi Windows Security akan dicegah untuk berjalan otomatis saat sistem mulai.
 
-        Be aware that SmartScreen for Microsoft Edge and Store apps will be disabled only for the currently logged in user
-        and for new users created after running this procedure.
+        Firewall Windows Defender akan tetap berfungsi seperti biasa.
+
+        Perlu diingat bahwa SmartScreen untuk Microsoft Edge dan aplikasi Store hanya akan dinonaktifkan untuk pengguna yang sedang masuk dan pengguna baru yang dibuat setelah menjalankan prosedur ini.
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new DefenderDisabler(ui, new ServiceRemover(ui));
@@ -55,14 +53,12 @@ class DefenderDisablingEntry : MenuEntry
 
 class EdgeRemovalEntry : MenuEntry
 {
-    public override string FullName => "Remove Microsoft Edge";
+    public override string FullName => "Hapus Edge Browser";
     public override string GetExplanation() => """
-        Both Edge Chromium and legacy Edge browser (which appears in Start menu once you remove the former)
-        will be uninstalled from the system.
-        Make sure that Edge Chromium is not updating itself before proceeding.
+        Kedua browser, Edge Chromium dan Edge versi lama (yang muncul di menu Start setelah Anda menghapus Edge Chromium), akan dihapus dari sistem. 
+        Pastikan bahwa Edge Chromium tidak memperbarui dirinya sendiri sebelum melanjutkan.
 
-        Note that Edge WebView2 runtime will NOT be removed if it's installed, as it may be required by
-        other programs installed on this PC.
+        Perlu dicatat bahwa runtime Edge WebView2 TIDAK akan dihapus jika sudah terpasang, karena mungkin diperlukan oleh program lain yang terpasang di PC ini.
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new EdgeRemover(ui, new AppxRemover(ui));
@@ -70,10 +66,11 @@ class EdgeRemovalEntry : MenuEntry
 
 class OneDriveRemovalEntry : MenuEntry
 {
-    public override string FullName => "Remove OneDrive";
+    public override string FullName => "Hapus OneDrive";
     public override string GetExplanation() => """
-        OneDrive will be disabled using Group Policies and then uninstalled for the current user.
-        Furthermore, it will be prevented from being installed when a new user logs in for the first time.
+        OneDrive akan dinonaktifkan menggunakan Group Policies dan kemudian dihapus untuk pengguna saat ini. Selain itu, 
+        
+        OneDrive akan dicegah untuk dipasang saat pengguna baru masuk untuk pertama kali.
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new OneDriveRemover(ui);
@@ -81,13 +78,13 @@ class OneDriveRemovalEntry : MenuEntry
 
 class ServicesRemovalEntry(AppConfiguration configuration) : MenuEntry
 {
-    public override string FullName => "Remove miscellaneous services";
+    public override string FullName => "Hapus Layanan lai-lain";
     public override string GetExplanation()
     {
-        string explanation = "All services whose name starts with the following names will be removed:\n";
+        string explanation = "Semua layanan yang namany berawal di list akan dihapus:\n";
         foreach (string service in configuration.ServicesToRemove)
             explanation += $"  {service}\n";
-        return explanation + "\nServices will be backed up in the same folder as this program executable.";
+        return explanation + "\nLayanan akan di Back up di dalam folder yang sama.";
     }
 
     public override IOperation CreateNewOperation(IUserInterface ui)
@@ -96,10 +93,10 @@ class ServicesRemovalEntry(AppConfiguration configuration) : MenuEntry
 
 class WindowsFeaturesRemovalEntry(AppConfiguration configuration) : MenuEntry
 {
-    public override string FullName => "Remove Windows features";
+    public override string FullName => "Hapus Fitur Windows";
     public override string GetExplanation()
     {
-        string explanation = "The following features on demand will be removed:";
+        string explanation = "Fitur sesuai permintaan berikut akan dihapus:";
         foreach (string feature in configuration.WindowsFeaturesToRemove)
             explanation += $"\n  {feature}";
         return explanation;
@@ -111,23 +108,19 @@ class WindowsFeaturesRemovalEntry(AppConfiguration configuration) : MenuEntry
 
 class PrivacySettingsTweakEntry : MenuEntry
 {
-    public override string FullName => "Tweak settings for privacy";
+    public override string FullName => "Sesuaikan pengaturan untuk privasi";
     public override string GetExplanation() => """
-        Several default settings and policies will be changed to make Windows more respectful of users' privacy.
-        These changes consist essentially of:
-          - adjusting various options under Privacy section of Settings app (disable advertising ID, app launch tracking etc.)
-          - preventing input data (inking/typing information, speech) from being sent to Microsoft to improve their services
-          - preventing Edge from sending browsing history, favorites and other data to Microsoft in order to personalize ads,
-            news and other services for your Microsoft account
-          - denying access to sensitive data (location, documents, activities, account details, diagnostic info) to
-            all UWP apps by default
-          - denying location access to Windows search
-          - disabling voice activation for voice assistants (so that they can't always be listening)
-          - disabling cloud synchronization of sensitive data (user activities, clipboard, text messages, passwords
-            and app data)
+        Beberapa pengaturan dan kebijakan default akan diubah untuk membuat Windows lebih menghargai privasi pengguna. Perubahan ini terutama meliputi:
 
-        Whereas almost all of these settings are applied for all users, some of them will only be changed for the current
-        user and for new users created after running this procedure.
+          - Menyesuaikan berbagai opsi di bawah bagian Privasi pada aplikasi Pengaturan (menonaktifkan ID iklan, pelacakan peluncuran aplikasi, dll.)
+          - Mencegah data input (informasi pengetikan/tulisan tangan, ucapan) dikirim ke Microsoft untuk meningkatkan layanan mereka
+          - Mencegah Edge mengirim riwayat penelusuran, favorit, dan data lainnya ke Microsoft untuk mempersonalisasi iklan, berita, dan layanan lainnya untuk akun Microsoft Anda
+          - Menolak akses ke data sensitif (lokasi, dokumen, aktivitas, detail akun, info diagnostik) ke semua aplikasi UWP secara default
+          - Menolak akses lokasi untuk pencarian Windows
+          - Menonaktifkan aktivasi suara untuk asisten suara (sehingga mereka tidak selalu mendengarkan)
+          - Menonaktifkan sinkronisasi cloud untuk data sensitif (aktivitas pengguna, papan klip, pesan teks, kata sandi, dan data aplikasi)
+
+        Hampir semua pengaturan ini diterapkan untuk semua pengguna, namun beberapa hanya akan diubah untuk pengguna saat ini dan untuk pengguna baru yang dibuat setelah menjalankan prosedur ini.
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new PrivacySettingsTweaker(ui);
@@ -135,11 +128,10 @@ class PrivacySettingsTweakEntry : MenuEntry
 
 class TelemetryDisablingEntry : MenuEntry
 {
-    public override string FullName => "Disable telemetry";
+    public override string FullName => "Mematikan Telemetry";
     public override string GetExplanation() => """
-        This procedure will disable scheduled tasks, services and features that are responsible for collecting and
-        reporting data to Microsoft, including Compatibility Telemetry, Device Census, Customer Experience Improvement
-        Program and Compatibility Assistant.
+        Prosedur ini akan menonaktifkan tugas terjadwal, layanan, dan fitur yang bertanggung jawab untuk mengumpulkan dan melaporkan data ke Microsoft, 
+        termasuk Compatibility Telemetry, Device Census, Customer Experience Improvement Program, dan Compatibility Assistant.
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new TelemetryDisabler(ui, new ServiceRemover(ui));
@@ -147,10 +139,11 @@ class TelemetryDisablingEntry : MenuEntry
 
 class AutoUpdatesDisablingEntry : MenuEntry
 {
-    public override string FullName => "Disable automatic updates";
+    public override string FullName => "Menonaktifkan Update otomatis";
     public override string GetExplanation() => """
-        Automatic updates for Windows, Store apps and speech models will be disabled using Group Policies.
-        At least Windows 10 Pro edition is required to disable automatic Windows updates.
+        Pembaruan otomatis untuk Windows, aplikasi Store, dan model suara akan dinonaktifkan menggunakan Group Policies.
+        
+        Setidaknya diperlukan edisi Windows 10 Pro untuk menonaktifkan pembaruan otomatis Windows.
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new AutoUpdatesDisabler(ui);
@@ -158,10 +151,10 @@ class AutoUpdatesDisablingEntry : MenuEntry
 
 class ScheduledTasksDisablingEntry(AppConfiguration configuration) : MenuEntry
 {
-    public override string FullName => "Disable miscellaneous scheduled tasks";
+    public override string FullName => "Menonaktifkan berbagai tugas terjadwal";
     public override string GetExplanation()
     {
-        string explanation = "The following scheduled tasks will be disabled:";
+        string explanation = "\r\nTugas terjadwal berikut akan dinonaktifkan:";
         foreach (string task in configuration.ScheduledTasksToDisable)
             explanation += $"\n  {task}";
         return explanation;
@@ -173,10 +166,10 @@ class ScheduledTasksDisablingEntry(AppConfiguration configuration) : MenuEntry
 
 class ErrorReportingDisablingEntry : MenuEntry
 {
-    public override string FullName => "Disable Windows Error Reporting";
+    public override string FullName => "Menonaktifkan Pelaporan Kesalahan Windows";
     public override string GetExplanation() => """
-        Windows Error Reporting will disabled by editing Group Policies, as well as by removing its services (after
-        backing them up).
+        Pelaporan Kesalahan Windows akan dinonaktifkan dengan mengedit Kebijakan Grup, serta dengan menghapus layanannya (setelah
+        mendukung mereka).
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new ErrorReportingDisabler(ui, new ServiceRemover(ui));
@@ -184,20 +177,19 @@ class ErrorReportingDisablingEntry : MenuEntry
 
 class ConsumerFeaturesDisablingEntry : MenuEntry
 {
-    public override string FullName => "Disable consumer features";
+    public override string FullName => "Nonaktifkan fitur konsumen";
     public override string GetExplanation() => """
-        This procedure will disable the following cloud-powered features aimed at the consumer market:
-          - Windows Spotlight (dynamic lock screen backgrounds)
-          - Spotlight experiences and recommendations in Microsoft Edge
-          - News and Interests
-          - Search highlights
-          - Bing search in Windows search bar
-          - Skype's Meet Now icon in the taskbar
-          - automatic installation of suggested apps
-          - cloud optimized content in the taskbar
+        Prosedur ini akan menonaktifkan fitur-fitur berbasis cloud berikut yang ditujukan untuk pasar konsumen:
+          - Windows Spotlight (latar belakang layar kunci dinamis)
+          - Pengalaman Spotlight dan rekomendasi di Microsoft Edge
+          - Berita dan Minat
+          - Sorotan pencarian
+          - Pencarian Bing di bilah pencarian Windows
+          - Ikon Meet Now Skype di taskbar
+          - instalasi otomatis aplikasi yang disarankan
+          - konten yang dioptimalkan cloud di taskbar
 
-        Be aware that some of these features will be disabled only for the currently logged in user and for new users
-        created after running this procedure.
+        Perlu diingat bahwa beberapa fitur ini hanya akan dinonaktifkan untuk pengguna yang sedang masuk dan pengguna baru yang dibuat setelah menjalankan prosedur ini.
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new ConsumerFeaturesDisabler(ui);
@@ -205,48 +197,59 @@ class ConsumerFeaturesDisablingEntry : MenuEntry
 
 class SuggestionsDisablingEntry : MenuEntry
 {
-    public override string FullName => "Disable suggestions and feedback requests";
+    public override string FullName => "Menonaktifkan permintaan saran dan umpan balik";
     public override string GetExplanation() => """
-        Feedback notifications and requests, apps suggestions and Windows tips will be turned off by changing
-        Group Policies and system settings accordingly and by disabling some related scheduled tasks.
+        Notifikasi dan permintaan umpan balik, saran aplikasi, dan tips Windows akan dimatikan dengan mengubah Group Policies dan pengaturan sistem sesuai, 
+        serta menonaktifkan beberapa tugas terjadwal terkait.
 
-        If you are not using an Enterprise or Education edition of Windows, suggestions will be disabled only for the
-        currently logged in user and for new users created after running this procedure.
+        Jika Anda tidak menggunakan edisi Enterprise atau Education dari Windows, 
+        saran hanya akan dinonaktifkan untuk pengguna yang sedang masuk dan pengguna baru yang dibuat setelah menjalankan prosedur ini.
         """;
 
     public override IOperation CreateNewOperation(IUserInterface ui) => new SuggestionsDisabler(ui);
 }
 
-class NewGitHubIssueEntry : MenuEntry
-{
-    public override string FullName => "Report an issue/Suggest a feature";
-    public override string GetExplanation() => """
-        You will now be brought to a web page where you can open a GitHub issue in order to report a bug or to suggest
-        a new feature.
-        """;
+//class NewGitHubIssueEntry : MenuEntry
+//{
+//    public override string FullName => "Laporkan isu atau saran";
+//    public override string GetExplanation() => """
+//        Dibawa ke github buat kirim saran atau isu :D
+//        """;
 
-    public override IOperation CreateNewOperation(IUserInterface ui)
-        => new BrowserOpener("https://github.com/Fs00/Win10BloatRemover/issues/new");
-}
+//    public override IOperation CreateNewOperation(IUserInterface ui)
+//        => new BrowserOpener("https://github.com/");
+//}
 
 class AboutEntry : MenuEntry
 {
-    public override string FullName => "About this program";
+    public override string FullName => "Tentang Program";
     public override string GetExplanation()
     {
         Version programVersion = GetType().Assembly.GetName().Version!;
         return $"""
-            Windows 10 Bloat Remover and Tweaker version {programVersion.Major}.{programVersion.Minor}
-            Developed by Fs00
+            Toolkit {programVersion.Major}.{programVersion.Minor}
+            Dikembangkan lebih lanjut oleh:
+            Darmawanysah Dawi 202012015 
+            Prasetyo Adji Purnomo 202012035
+
+            Kelompok kami mengembangkan sebuah proyek perangkat lunak berbasis CLI (Command Line Interface) 
+            Proyek ini bertujuan untuk menyediakan alat yang efisien 
+            dan mudah digunakan untuk menyelesaikan berbagai tugas yang relevan 
+            dengan kebutuhan pengguna kami.
+            Didasarkan oleh Pengguna Github Fs00
             Official GitHub repository: https://github.com/Fs00/Win10BloatRemover
 
-            Originally based on Windows 10 de-botnet guide by Federico Dossena: https://fdossena.com
-            Credits to all open source projects whose work has helped me to improve this software:
-              - privacy.sexy website: https://privacy.sexy
-              - Debloat Windows 10 scripts: https://github.com/W4RH4WK/Debloat-Windows-10
-              - AveYo's Edge removal script: https://github.com/AveYo/fox
+            Awalnya berdasarkan panduan Windows 10 de-botnet oleh Federico Dossena: https://fdossena.com
 
-            This software is released under BSD 3-Clause Clear license (continue to read full text).
+            Kredit kepada semua proyek sumber terbuka yang telah membantu meningkatkan perangkat lunak ini:
+              - Situs web privacy.sexy: https://privacy.sexy
+              - Source Debloat Windows 10: https://github.com/W4RH4WK/Debloat-Windows-10
+              - Source penghapusan Edge oleh AveYo: https://github.com/AveYo/fox
+
+            Kami percaya bahwa proyek ini akan memberikan kontribusi yang signifikan dalam mempermudah pengguna dalam mengelola file dan direktori 
+            mereka melalui antarmuka CLI yang intuitif dan fungsional.
+            Perangkat lunak ini dirilis di bawah lisensi BSD 3-Clause Clear.
+
             """;
     }
 
@@ -255,8 +258,8 @@ class AboutEntry : MenuEntry
 
 class QuitEntry(RebootRecommendedFlag rebootFlag) : MenuEntry
 {
-    public override string FullName => "Exit the application";
+    public override string FullName => "Keluar";
     public override bool ShouldQuit => true;
-    public override string GetExplanation() => "Are you sure?";
+    public override string GetExplanation() => "Meluncur";
     public override IOperation CreateNewOperation(IUserInterface ui) => new AskForRebootOperation(ui, rebootFlag);
 }

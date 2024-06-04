@@ -60,7 +60,7 @@ public class AppxRemover(IUserInterface ui)
             var appPackages = GetAppPackages(appName);
             if (appPackages.Length == 0)
             {
-                ui.PrintMessage($"App {appName} is not installed.");
+                ui.PrintMessage($"Aplikasi {appName} Anda Halu.");
                 return RemovalOutcome.NotInstalled;
             }
 
@@ -92,7 +92,7 @@ public class AppxRemover(IUserInterface ui)
         private void PrintError(IAsyncOperationWithProgress<DeploymentResult, DeploymentProgress> operation)
         {
             DeploymentResult result = operation.GetResults();
-            string errorMessage = operation.ErrorCode?.Message?.Trim() ?? "Unknown error occurred";
+            string errorMessage = operation.ErrorCode?.Message?.Trim() ?? "Lah?";
             if (!string.IsNullOrEmpty(result.ErrorText))
                 errorMessage += $"\n{result.ErrorText}";
 
@@ -119,7 +119,7 @@ public class AppxRemover(IUserInterface ui)
             {
                 // Even though removing a system app for a single user is technically possible, we disallow that
                 // since cumulative updates would reinstall the app anyway, unless we prevent its reinstallation for all users
-                ui.PrintNotice("Uninstallation skipped. This is a system app, and therefore can only be removed for all users.");
+                ui.PrintNotice("Di Skip karna sihir :|");
                 return RemovalOutcome.Failure;
             }
 

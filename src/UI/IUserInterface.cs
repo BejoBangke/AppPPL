@@ -24,6 +24,6 @@ public interface IUserInterface : IMessagePrinter
     {
         var choice = AskUserConsent(text);
         if (choice == UserChoice.No)
-            throw new Exception("The user aborted the operation.");
+            throw new Exception("Operasi dibatalkan :( ");
     }
 }
