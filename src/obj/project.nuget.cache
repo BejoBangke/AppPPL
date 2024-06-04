@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "+VA0bZ2d1Uk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\toshiba\\Source\\Repos\\Win10BloatRemover\\src\\ToolkitProjek.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\toshiba\\.nuget\\packages\\microsoft.dism\\3.1.0\\microsoft.dism.3.1.0.nupkg.sha512",
+    "C:\\Users\\toshiba\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\toshiba\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
+    "C:\\Users\\toshiba\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "C:\\Users\\toshiba\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
+    "C:\\Users\\toshiba\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.31\\microsoft.windows.sdk.net.ref.10.0.19041.31.nupkg.sha512"
+  ],
+  "logs": []
+}
